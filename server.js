@@ -1,21 +1,22 @@
 const express = require("express");
 const app = express();
+const cookieSession = require("cookie-session");
+const bodyParser = require('body-parser')
 const path = require("path");
+const apiRoutes = require("./src/backend/server/routes/api.js");
 
 const assetsRouter = require("./src/backend/server/assets-router");
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
+app.use(bodyParser.json())
+
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/src", assetsRouter);
 
-app.get("/api/v1", (req, res) => {
-  return res.json({
-    project: "React and Express Boilerplate",
-    from: "Vanaldito",
-  });
-});
-
-app.get('/foo', (req, res) => {
-  return res.send("etits");
-});
+app.use('/api', apiRoutes);
 
 app.get("/*", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
