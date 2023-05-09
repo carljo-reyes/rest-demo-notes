@@ -48,5 +48,27 @@ module.exports = {
             }
         }
         return [status, data];
+    },
+
+    getAllNotes: async function (username) {
+        const userNotes = await Note.find({
+            "from.id": username,
+            "to.id": username
+        })
+        return userNotes;
+    },
+
+    getSentNotes: async function (username) {
+        const userNotes = await Note.find({
+            "to.id": username
+        })
+        return userNotes;
+    },
+
+    getReceivedNotes: async function (username) {
+        const userNotes = await Note.find({
+            "from.id": username
+        })
+        return userNotes;
     }
 }

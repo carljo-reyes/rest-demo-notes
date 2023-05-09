@@ -8,7 +8,7 @@ apiRoute.use('/notes', noteRoutes);
 apiRoute.use('/auth', authRoutes);
 
 apiRoute.all('*', (_, res) => {
-    return res.status(404).send("404");
+    return res.status(404).send("404 Endpoint not found");
 })
 
 module.exports = apiRoute;

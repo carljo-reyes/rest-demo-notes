@@ -37,11 +37,11 @@ or
 
 # Installation
 
-Run the next command to clone this repository
+Run the commands to clone this repository and start the project on your local server
 ``` bash
 # clone the repo
 git clone https://github.com/carljo-reyes/rest-demo-notes.git
-
+cd rest-demo-notes
 # 
 npm install --save-dev concurrently
 npm run dev

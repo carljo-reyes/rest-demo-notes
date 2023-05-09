@@ -23,6 +23,15 @@ app.get("/*", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 })
 
+const errorHandler = function(err, req, res, next) {
+  console.log(err);
+  res
+    .status(500)
+    .json({ message: "Oops... something broke. It's not you, it's us" });
+}
+
+app.use(errorHandler);
+
 const { PORT = 5000 } = process.env;
 
 app.listen(PORT, () => {
