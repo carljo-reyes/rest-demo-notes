@@ -6,12 +6,19 @@ const authorizeGuard = [ loginGuard, authMiddleware.authorizeGuard ];
 const userService = require('../../services/user');
 
 // user
-userRoutes.get('/', (req, res) => { // get all users
+userRoutes.get('/', async (_, res) => { // get all users
     return res
         .status(200)
-        .json(userService.getAll());
+        .json(await userService.getAllUsers());
 }); 
-userRoutes.post('/'); // create a user
+
+userRoutes.post('/',  async (req, res) => { // create a user
+    const [data, status] = await userService.createUser(req.body)
+    return res
+        .status(status)
+        .json(data)
+});
+
 userRoutes.get('/:id'); // get a user
 userRoutes.delete('/:id', authorizeGuard); // delete a user
 

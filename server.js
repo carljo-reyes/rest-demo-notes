@@ -3,17 +3,18 @@ const app = express();
 const cookieSession = require("cookie-session");
 const bodyParser = require('body-parser')
 const path = require("path");
-const apiRoutes = require("./src/backend/server/routes/api.js");
-
-const assetsRouter = require("./src/backend/server/assets-router");
 
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2']
 }))
 app.use(bodyParser.json())
-
 app.use("/", express.static(path.join(__dirname, "public")));
+
+require('./src/backend/database/mongoConn');
+
+const apiRoutes = require("./src/backend/server/routes/api.js");
+const assetsRouter = require("./src/backend/server/assets-router");
 app.use("/src", assetsRouter);
 
 app.use('/api', apiRoutes);

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 const note = {
-    _id: ObjectId,
     title: String,
     body: String,
     from: {
