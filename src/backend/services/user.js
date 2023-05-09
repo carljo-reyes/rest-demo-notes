@@ -8,7 +8,7 @@ module.exports = {
 
     createUser: async function (body) {
         const searchedUser = await User.findByUsername(body.username);
-        let status, data;
+        let data, status;
         if (searchedUser != null) {
             data = searchedUser
             status = 200
@@ -18,5 +18,35 @@ module.exports = {
             status = 201;
         }
         return [data, status];
+    },
+
+    findOneUser: async function (username) {
+        const searchedUser = await User.findByUsername({username});
+        let data, status;
+        if (searchedUser != null) {
+            status = 200;
+            data = searchedUser;
+        } else {
+            status = 400
+            data = {
+                message: "User not found"
+            }
+        }
+        return [status, data];
+    },
+
+    deleteUser: async function (username) {
+        const deletedUser = await User.deleteOne({username});
+        let data, status;
+        if (deletedUser != null) {
+            status = 204;
+            data = deletedUser;
+        } else {
+            status = 400
+            data = {
+                message: "User not found"
+            }
+        }
+        return [status, data];
     }
 }

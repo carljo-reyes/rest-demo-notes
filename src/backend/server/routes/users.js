@@ -13,14 +13,25 @@ userRoutes.get('/', async (_, res) => { // get all users
 }); 
 
 userRoutes.post('/',  async (req, res) => { // create a user
-    const [data, status] = await userService.createUser(req.body)
+    const [status, data] = await userService.createUser(req.body)
     return res
         .status(status)
         .json(data)
 });
 
-userRoutes.get('/:id'); // get a user
-userRoutes.delete('/:id', authorizeGuard); // delete a user
+userRoutes.get('/:id', async(req, res) => { // get a user
+    const [status, data] = await userService.findUser(req.body)
+    return res
+        .status(status)
+        .json(data)
+}); 
+
+userRoutes.delete('/:user', authorizeGuard, async(req, res) => { // delete a user
+    const [status, data] = await userService.deleteUser(req.params.user)
+    return res
+        .status(status)
+        .json(data)
+});
 
 // authenticated routes (specific to logged-in user)
 const protectedRoutes = express.Router();
