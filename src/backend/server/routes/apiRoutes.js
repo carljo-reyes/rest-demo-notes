@@ -1,7 +1,7 @@
 const apiRoute = require("express").Router();
-const userRoutes = require('./users.js');
-const noteRoutes = require('./notes.js');
-const authRoutes = require('./auth.js');
+const userRoutes = require('./userRoutes.js');
+const noteRoutes = require('./noteRoutes.js');
+const authRoutes = require('./authRoutes.js');
 apiRoute.use('/users', userRoutes);
 apiRoute.use('/notes', noteRoutes);
 apiRoute.use('/auth', authRoutes);

@@ -1,7 +1,7 @@
 const express = require('express');
 const authRoutes = express.Router();
-const userService = require('../../services/user');
-const authService = require('../../services/authentication/auth');
+const userService = require('../../services/userService');
+const authService = require('../../services/authentication/authService');
 
 const HTTP405_MESSAGE = { "message": "Method not found. Did you mean to use POST?" }
 

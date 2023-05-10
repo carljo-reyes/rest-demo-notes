@@ -1,22 +1,24 @@
-const noteRoutes = require('express').Router();
+const express = require('express');
+const noteRoutes = express.Router();
 const authMiddleware = require('./middleware/auth');
 const loginGuard = authMiddleware.loginGuard;
 const ownerGuard = authMiddleware.ownerGuard;
 const hasAccessGuard = authMiddleware.hasAccessGuard;
-const noteService = require('../../services/note');
+const noteService = require('../../services/noteService');
 
-// available to public
-noteRoutes.all('/', async (req, res, next) => { // return all accessible notes
+noteRoutes.all('/', async (req, res, next) => { 
     try {
         let status, data;
         switch (req.method) {
             // TODO: Finish implem
             case "POST":
+                [status, data] = await noteService.createNote(req)
+            break;
+
 
             case "GET":
                 const optionalUserId = req?.session?.authDetails?.userId ?? null;
-                data = await noteService.getAll(optionalUserId);
-                status = 200;
+                [status, data] = await noteService.getAll(optionalUserId);
                 break;
 
             // TODO: Create 405
@@ -58,7 +60,17 @@ noteRoutes.all('/:direction/:user', (req, res, next) => {
     }
 });
 
-noteRoutes.all('/:slug', (req, res, next) => {
+noteRoutes.route('/:slug')
+    .post((req, res) => {
+        const [status, data] = noteService.createNote(req);
+    })
+    .get()
+    .put()
+    .head()
+    .delete()
+
+
+foo = (req, res, next) => {
     const slug = req.params.slug;
     const reqBody = req.body;
 
@@ -66,7 +78,7 @@ noteRoutes.all('/:slug', (req, res, next) => {
         switch (req.method) {
             // TODO: Create Implem
             case "POST":
-            // TODO: Add 305 case
+            // TODO: Add 301 case
             case "GET":
             case "PUT":
             case "DELETE":
@@ -78,6 +90,6 @@ noteRoutes.all('/:slug', (req, res, next) => {
     } catch (err) {
         next(err);
     }
-})
+}
 
 module.exports = noteRoutes;

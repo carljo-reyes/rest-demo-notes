@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+const { ObjectId } = mongoose.Schema.Types
 
 const note = {
-    slug: String,
-    title: String,
+    slug: { type: String, required: true },
+    title: { type: String, required: true },
     body: String,
     isPublic: Boolean,
     from: {
@@ -20,12 +20,11 @@ const note = {
 
 const noteSchema = mongoose.Schema(note);
 
-noteSchema.statics.findBySlugOrId = function (slugOrId) {
+noteSchema.statics.findBySlug = function (slug) {
+    const regex = new RegExp(`^${slug}`);
     return this.find({
-        "$or": [
-            { _id: slugOrId },
-            { slug: slugOrId },
-        ]
+        slug: regex
+        
     });
 }
 
