@@ -2,9 +2,49 @@ const express = require('express');
 const userRoutes = express.Router();
 const authMiddleware = require('./middleware/auth');
 const { loginGuard, ownerGuard } = authMiddleware;
-
 const userService = require('../../services/user');
 const noteService = require('../../services/note.js');
+const fallback = require('./middleware/fallback');
+
+userRoutes.all('/', (req, res) => {
+    try {
+        switch (req.method) {
+            // TODO: Create Implem
+            case "GET":
+            case "POST":
+
+            // TODO: Create 405
+            default:
+        }
+    } catch (err) {
+        next(err);
+    }
+});
+
+userRoutes.all('/:id', (req, res) => {
+    try {
+        switch (req.method) {
+            // TODO: Create Implem
+            case "POST":
+            case "GET":
+            case "PUT":
+            case "DELETE":
+
+            // TODO: Create 405
+            default:
+        }
+    } catch (err) {
+        next(err);
+    }
+});
+
+userRoutes.route('/:id/notes')
+    .get('/')
+    .get('/sent')
+    .get('/received')
+    .all('/', fallback[405])
+    .all(/(\/sent|\/received)/, fallback[405]);
+
 
 // user
 userRoutes.get('/', async (_, res) => { // get all users

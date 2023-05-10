@@ -6,50 +6,78 @@ const hasAccessGuard = authMiddleware.hasAccessGuard;
 const noteService = require('../../services/note');
 
 // available to public
-noteRoutes.get('/', async (req, res, next) => { // return all accessible notes
+noteRoutes.all('/', async (req, res, next) => { // return all accessible notes
     try {
-        const optionalUserId = req?.session?.authDetails?.userId ?? null;
-        const foundNotes = await noteService.getAll(optionalUserId);
-        return res
-            .status(200)
-            .json(foundNotes);
+        let status, data;
+        switch (req.method) {
+            // TODO: Finish implem
+            case "POST":
+
+            case "GET":
+                const optionalUserId = req?.session?.authDetails?.userId ?? null;
+                data = await noteService.getAll(optionalUserId);
+                status = 200;
+                break;
+
+            // TODO: Create 405
+            default:
+        }
+
+        return res.status(status).json(data);
     } catch (err) {
-        next(err)
+        next(err);
     }
 });
 
-noteRoutes.get('/public', async (req, res, next) => { // return all public notes
-    const publicNotes = noteService.getPublic();
-    return res
-        .status(200)
-        .json(publicNotes);
-})     
-
-noteRoutes.get('/private', loginGuard, async (req, res) => {
-    const data = await userService.getAllNotes(req.params.user);
-    return res
-        .status(200)
-        .json(data);
-}) 
-
-noteRoutes.get('/:slugOrId', hasAccessGuard, async (req, res) => {
-    return res
-        .status(200)
-        .send(res.locals.note)
-}) // viewing a note
-
-noteRoutes.post('/:slug', loginGuard)        // create a note with a slug
-noteRoutes.post('/', loginGuard, async (req, res, next) => {
+noteRoutes.all('/from/:from/to/:to', (req, res, next) => {
     try {
-        const [status, data] = await noteService.createNote(req);
-        res.status(status).json(data);
-    } catch(err) {
+        switch (req.method) {
+            // TODO: Create Implem
+            case "GET":
+
+            // TODO: Create 405
+            default:
+        }
+    } catch (err) {
         next(err);
     }
+})
 
-}) // create a note
+noteRoutes.all('/:direction/:user', (req, res, next) => {
+    const { direction, user } = req.params;
+    try {
+        switch (req.method) {
+            // TODO: Create Implem
+            case "GET":
 
-noteRoutes.put('/:slugOrId', ownerGuard)  // overwrite a note
-noteRoutes.delete('/:id', ownerGuard)     // delete a note
+            // TODO: Create 405
+            default:
+        }
+    } catch (err) {
+        next(err);
+    }
+});
+
+noteRoutes.all('/:slug', (req, res, next) => {
+    const slug = req.params.slug;
+    const reqBody = req.body;
+
+    try {
+        switch (req.method) {
+            // TODO: Create Implem
+            case "POST":
+            // TODO: Add 305 case
+            case "GET":
+            case "PUT":
+            case "DELETE":
+            case "HEAD":
+
+            // TODO: Create 405
+            default:
+        }
+    } catch (err) {
+        next(err);
+    }
+})
 
 module.exports = noteRoutes;

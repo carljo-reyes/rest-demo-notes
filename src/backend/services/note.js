@@ -18,14 +18,15 @@ module.exports = {
         const { hideSenderName = false, ...noteMtd } = req.body
         const newNote = new Note(noteMtd);
         
+        newNote.from.id = req.session.authDetails.userId;
         if (hideSenderName) {
             newNote.from.name = undefined;
         } else {
-            newNote.from.name = req.session.username
+            newNote.from.name = req.session.authDetails.username;
         }
 
-        const saveStatus = newNote.save();
-        return [200, req];
+        const saveStatus = await newNote.save();
+        return [200, saveStatus];
         
     }
 }

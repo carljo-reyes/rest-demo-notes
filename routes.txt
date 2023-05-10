@@ -1,0 +1,22 @@
+Notes:
+GET /notes
+GET /notes/from/:id/to/:id
+
+POST /notes
+POST /notes/:slugOrId
+PUT /notes/:slugOrId
+DELETE /notes/:slugOrId
+GET /notes/:slugOrId
+HEAD /notes/:slugOrId
+
+GET /notes/public
+GET /notes/public/from/:id/to/:id
+
+GET /notes/private
+GET /notes/private/from/:id/to/:id
+
+GET /users
+GET /users/:id
+POST /users/:id
+PUT /users/:id
+DELETE /users/:id
