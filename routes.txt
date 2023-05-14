@@ -1,22 +1,20 @@
-Notes:
-GET /notes
-GET /notes/from/:id/to/:id
-
-POST /notes
-POST /notes/:slugOrId
-PUT /notes/:slugOrId
-DELETE /notes/:slugOrId
-GET /notes/:slugOrId
-HEAD /notes/:slugOrId
-
-GET /notes/public
-GET /notes/public/from/:id/to/:id
-
-GET /notes/private
-GET /notes/private/from/:id/to/:id
-
+Users Collection Resource
+POST /users
 GET /users
-GET /users/:id
-POST /users/:id
-PUT /users/:id
-DELETE /users/:id
+
+Notes Collection Resource
+GET /notes
+
+User Resource
+GET /users/{id}
+PUT /users/{id}
+DELETE /users/{id}
+
+Note Resource
+GET /notes/{id}
+PUT /notes/{id}
+DELETE /notes/{id}
+
+User/Note Relationship Resource
+POST /user/{id}/notes
+GET /user/{id}/notes

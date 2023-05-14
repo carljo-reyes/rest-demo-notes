@@ -6,6 +6,7 @@ const userService = require('../../services/userService');
 const noteService = require('../../services/noteService.js');
 const fallback = require('./middleware/fallback');
 
+// POST | GET | /users 
 userRoutes.all('/', async (req, res, next) => {
     try {
         let data, status;
@@ -22,39 +23,35 @@ userRoutes.all('/', async (req, res, next) => {
                     .status(status)
                     .json(data);
 
-            // TODO: Create 405
             default:
+                return fallback[405](req, res);
         }
     } catch (err) {
         next(err);
     }
 });
 
-userRoutes.all('/:user', async(req, res, next) => {
+// GET | PUT | DELETE | /users/{id}
+userRoutes.all('/:id', async(req, res, next) => {
     try {
-        const { user: username } = req.params;
+        const { user: id } = req.params;
         let status, data;
 
         switch (req.method) {
-            // TODO: Create Implem
-            case "POST":
-                [data, status] = await userService.createUser(req.body, username);
-            break;
-
             case "GET":
-                [status, data] = await userService.getUser(username);
+                [status, data] = await userService.getUser(id);
             break;
             
             case "PUT":
-                [status, data] = await userService.upsertUser(req.body, username);
+                [status, data] = await userService.upsertUser(req.body, id);
             break;
 
             case "DELETE":
-                [status, data] = await userService.deleteUser(username);
+                [status, data] = await userService.deleteUser(id);
             break;
 
-            // TODO: Create 405
             default:
+                return fallback[405](req, res);
         }
 
         return res.status(status).json(data);
