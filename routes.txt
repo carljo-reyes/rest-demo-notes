@@ -1,20 +1,26 @@
 Users Collection Resource
-POST /users
-GET /users
-
-Notes Collection Resource
-GET /notes
+✅ POST /users
+✅ GET /users
 
 User Resource
-GET /users/{id}
-PUT /users/{id}
-DELETE /users/{id}
+✅ GET /users/{id}
+✅ PUT /users/{id}
+✅ DELETE /users/{id}
+
+Notes Collection Resource
+✅ GET /notes
 
 Note Resource
-GET /notes/{id}
-PUT /notes/{id}
-DELETE /notes/{id}
+✅ GET /notes/{id}
+✅ PUT /notes/{id}
+✅ DELETE /notes/{id}
+✅ HEAD /notes/{id}
 
 User/Note Relationship Resource
-POST /user/{id}/notes
-GET /user/{id}/notes
+✅ POST /user/{id}/notes
+✅ GET /user/{id}/notes
+
+Auth Resource
+✅ POST /auth/login
+✅ GET /auth/login
+✅ POST /auth/logout

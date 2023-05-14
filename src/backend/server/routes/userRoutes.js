@@ -11,7 +11,6 @@ userRoutes.all('/', async (req, res, next) => {
     try {
         let data, status;
         switch (req.method) {
-            // TODO: Create Implem
             case "GET":
                 return res
                     .status(200)
@@ -59,13 +58,5 @@ userRoutes.all('/:id', async(req, res, next) => {
         next(err);
     }
 });
-
-userRoutes.use('/:user/notes', express.Router({ mergeParams: true })
-    .get('/', userService.getNotes)
-    .get('/sent', userService.sentNotes)
-    .get('/received', userService.receivedNotes)
-    .all('/', fallback[405])
-    .all(/(\/sent|\/received)/, fallback[405])
-)
 
 module.exports = userRoutes;

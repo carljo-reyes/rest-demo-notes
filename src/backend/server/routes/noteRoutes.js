@@ -30,7 +30,7 @@ noteRoutes.all('/', async (req, res, next) => {
     }
 });
 
-// GET | /notes/{id}
+// GET | PUT | DELETE | HEAD | /notes/{id}
 noteRoutes.route('/:slug')
     .get()
     .put()
