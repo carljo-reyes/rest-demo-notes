@@ -32,7 +32,7 @@ noteRoutes.all('/', async (req, res, next) => {
 
 // GET | PUT | DELETE | HEAD | /notes/{id}
 noteRoutes.route('/:slug')
-    .get(async (req, res) => {
+    .get(async (req, res, next) => {
         const { slug } = req.params;
         const [status, data] = await noteService.getNote(slug);
         return res.status(status).json(data);

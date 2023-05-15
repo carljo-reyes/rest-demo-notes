@@ -5,10 +5,11 @@ const { loginGuard, ownerGuard } = authMiddleware;
 const userService = require('../../services/userService');
 const noteService = require('../../services/noteService.js');
 const fallback = require('./middleware/fallback');
+const { withCatch } = require('./middleware/catchWrapper');
 
 // POST | GET | /users 
 userRoutes.all('/', async (req, res, next) => {
-    try {
+    await withCatch(async () => {
         let data, status;
         switch (req.method) {
             case "GET":
@@ -25,9 +26,7 @@ userRoutes.all('/', async (req, res, next) => {
             default:
                 return fallback[405](req, res);
         }
-    } catch (err) {
-        next(err);
-    }
+    }, next)
 });
 
 // GET | PUT | DELETE | /users/{id}
