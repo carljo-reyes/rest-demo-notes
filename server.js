@@ -15,6 +15,7 @@ require('./src/backend/database/mongoConn');
 
 const apiRoutes = require("./src/backend/server/routes/apiRoutes");
 const assetsRouter = require("./src/backend/server/assets-router");
+const mongoose = require("mongoose");
 app.use("/src", assetsRouter);
 
 app.use('/api', apiRoutes);
@@ -35,6 +36,9 @@ const errorHandler = function(err, req, res, next) {
     error.error = "JSON error"
     status = 400;
   } 
+  if (err instanceof mongoose.Error || err.message.includes('ECONNREFUSED')) {
+    status = 503;
+  }
   res
     .status(status)
     .json(error);

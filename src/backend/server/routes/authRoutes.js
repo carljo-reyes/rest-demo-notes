@@ -2,10 +2,11 @@ const express = require('express');
 const authRoutes = express.Router();
 const userService = require('../../services/userService');
 const authService = require('../../services/authentication/authService');
+const { withCatch } = require('./middleware/catchWrapper');
 
 const HTTP405_MESSAGE = { "message": "Method not found. Did you mean to use POST?" }
 
-authRoutes.all('/login', async (req, res) => {
+authRoutes.all('/login', withCatch(async (req, res) => {
     let status, data;
     switch (req.method) {
         case "POST":
@@ -22,7 +23,7 @@ authRoutes.all('/login', async (req, res) => {
     }
 
     return res.status(status).send(data);
-});
+}));
 
 authRoutes.all('/logout', (req, res) => {
     switch(req.method) {
