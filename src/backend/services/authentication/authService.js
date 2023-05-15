@@ -24,6 +24,7 @@ module.exports = {
         if (foundUser ?? null != null) {
             authDetails.username = username;
             authDetails.userId   = foundUser._id;
+            authDetails.name   = foundUser.name;
             return [200, authDetails];
         }
 

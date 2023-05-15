@@ -33,20 +33,20 @@ userRoutes.all('/', async (req, res, next) => {
 // GET | PUT | DELETE | /users/{id}
 userRoutes.all('/:id', async(req, res, next) => {
     try {
-        const { user: id } = req.params;
+        const { id: username } = req.params;
         let status, data;
 
         switch (req.method) {
             case "GET":
-                [status, data] = await userService.getUser(id);
+                [status, data] = await userService.getUser(username);
             break;
             
             case "PUT":
-                [status, data] = await userService.upsertUser(req.body, id);
+                [status, data] = await userService.upsertUser(req.body, username);
             break;
 
             case "DELETE":
-                [status, data] = await userService.deleteUser(id);
+                [status, data] = await userService.deleteUser(username);
             break;
 
             default:

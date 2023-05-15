@@ -6,7 +6,7 @@ const userNotesRoutes = require('./userNotesRoutes.js');
 
 apiRoute.use('/users', userRoutes);
 apiRoute.use('/notes', noteRoutes);
-apiRoute.use('/users/:id/notes', userNotesRoutes);
+apiRoute.use('/', userNotesRoutes); // 'users/{id}/notes
 
 apiRoute.use('/auth', authRoutes);
 

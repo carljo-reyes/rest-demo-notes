@@ -21,7 +21,7 @@ const validateNote = (note, session) => {
 module.exports = {
     getAll: async function(optionalUser) {
        const criteria = { 
-            "$or": [ { "isPublic": true} ]
+            "$or": [ { "isPublic": true} ] // default search criteria
         };
 
        if (optionalUser) {
@@ -32,6 +32,72 @@ module.exports = {
        const foundNotes = await Note.find(criteria);
        return [200, foundNotes];
     },
+    
+    makePublic: async function(slug) {
+        const updatedField = { isPublic: true };
+        const options = { new: true };
+        const data = await Note.findOneAndUpdate({ slug }, updatedField, options);
+        return [200, data];
+    },
+
+    getNote: async function(slug) {
+        let status;
+        let data = await Note.findOne({slug});
+        if (data != null) {
+            status = 200
+        } else {
+            status = 404
+            data = undefined;
+        }
+        return [status, data];
+    },
+
+    overwriteNote: async function(slug, noteMtd) {
+        const noteObj = { ...noteMtd };
+        const options = { new: true };
+        delete noteObj.slug;
+        delete noteObj.from.id;
+        delete noteObj.to.id;
+
+        let status = 200,
+            data;
+        data = await Note.findOneAndUpdate({slug}, noteObj, options);
+
+        if (data == null) {
+            data = { error: "Note not found"};
+            status = 404;
+        } else {
+            status = 200
+        }
+
+
+        return [status, data];
+    },
+
+    deleteNote: async function(slug, authUserId) {
+        let status = 204,
+            data;
+        let deletedNote = await Note.findOneAndDelete({
+            slug, 
+            "from.id": authUserId
+        })
+
+        if (deletedNote == null) {
+            status = 404;
+            data = {
+                error: "Note not found",
+                message: [
+                    "Make sure that passed resource id (i.e. slug) is correct",
+                    "Also ensure that you sent this note"
+                ]
+            }
+        }
+
+        return [status, data];
+        
+    },
+
+    /* @deprecated */
     createNote: async function(req) {
         let status, data;
         const { hideName } = req.query;

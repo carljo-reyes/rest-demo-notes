@@ -32,9 +32,30 @@ noteRoutes.all('/', async (req, res, next) => {
 
 // GET | PUT | DELETE | HEAD | /notes/{id}
 noteRoutes.route('/:slug')
-    .get()
-    .put()
-    .delete()
+    .get(async (req, res) => {
+        const { slug } = req.params;
+        const [status, data] = await noteService.getNote(slug);
+        return res.status(status).json(data);
+    })
+    .put(async (req, res) => {
+        const { slug } = req.params;
+        const [status, data] = await noteService.overwriteNote(slug, req.body);
+        return res.status(status).send(data);
+    })
+    .delete(loginGuard, async (req, res) => {
+        const { slug } = req.params;
+        const [status, data] = await noteService.deleteNote(slug, req.session.authDetails.userId)
+        return res.status(status).send(data);
+    })
     .head()
+    .all()
+
+noteRoutes.route('/:slug/makePublic')
+    .put(async (req, res) => {
+        const { slug } = req.params;
+        const [status, data] = await noteService.makePublic(slug);
+        return res.status(status).send(data);
+    })
+    .all()
 
 module.exports = noteRoutes;
